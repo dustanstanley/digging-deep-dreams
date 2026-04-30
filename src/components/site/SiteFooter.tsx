@@ -1,4 +1,4 @@
-import logo from "@/assets/myers-logo.png";
+import logo from "@/assets/myers-logo-light.png";
 import { COMPANY, NAV_LINKS } from "@/content/site";
 
 export const SiteFooter = () => {
