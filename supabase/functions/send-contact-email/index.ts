@@ -3,7 +3,8 @@ import { z } from "https://esm.sh/zod@3.23.8";
 
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
 
-const TEST_RECIPIENT = "dustan@hasten.tv";
+// TODO: Replace with production recipients (e.g. estimating@myersunderground.com) before go-live.
+const TEST_RECIPIENTS = ["dustan@hasten.tv", "accounts@mrfxr.com"];
 const FROM_ADDRESS = "Myers Website <onboarding@resend.dev>";
 
 const BodySchema = z.object({
@@ -50,7 +51,7 @@ Deno.serve(async (req) => {
       <p><strong>Message:</strong></p>
       <p style="white-space:pre-wrap">${escapeHtml(d.message)}</p>
       <hr/>
-      <p style="color:#888;font-size:12px">Sent from the Myers Underground Utilities website (test mode → ${TEST_RECIPIENT}).</p>
+      <p style="color:#888;font-size:12px">Sent from the Myers Underground Utilities website (test mode → ${TEST_RECIPIENTS.join(", ")}).</p>
     `;
 
     const resp = await fetch(`${GATEWAY_URL}/emails`, {
@@ -62,7 +63,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         from: FROM_ADDRESS,
-        to: [TEST_RECIPIENT],
+        to: TEST_RECIPIENTS,
         reply_to: d.email,
         subject: `Project Inquiry — ${d.projectType} (${d.name})`,
         html,
