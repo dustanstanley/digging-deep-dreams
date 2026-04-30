@@ -3,7 +3,8 @@ import { z } from "https://esm.sh/zod@3.23.8";
 
 const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
 
-const TEST_RECIPIENT = "dustan@hasten.tv";
+// TODO: Replace with production recipients (e.g. estimating@myersunderground.com) before go-live.
+const TEST_RECIPIENTS = ["dustan@hasten.tv", "accounts@mrfxr.com"];
 const FROM_ADDRESS = "Myers Website <onboarding@resend.dev>";
 
 const BodySchema = z.object({
