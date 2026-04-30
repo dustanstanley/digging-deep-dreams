@@ -10,7 +10,7 @@ export const SiteFooter = () => {
             <img
               src={logo}
               alt={COMPANY.name}
-              className="h-20 w-auto bg-primary-foreground/95 rounded-md p-3 mb-5"
+              className="h-20 w-auto mb-5"
             />
             <p className="text-primary-foreground/80 leading-relaxed text-sm max-w-xs">
               Mississippi-based underground utility contractor serving public and private clients
