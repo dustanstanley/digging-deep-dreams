@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import { COMPANY } from "@/content/site";
+import { supabase } from "@/integrations/supabase/client";
 
 const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -34,9 +35,10 @@ export const Contact = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [projectType, setProjectType] = useState("");
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     const data = {
       name: String(fd.get("name") ?? ""),
       company: String(fd.get("company") ?? ""),
@@ -55,21 +57,29 @@ export const Contact = () => {
     setErrors({});
     setSubmitting(true);
 
-    // Open user's email client with prefilled details (no backend required yet)
-    const subject = `Project Inquiry — ${parsed.data.projectType}`;
-    const body =
-      `Name: ${parsed.data.name}\n` +
-      (parsed.data.company ? `Company: ${parsed.data.company}\n` : "") +
-      `Email: ${parsed.data.email}\n` +
-      `Phone: ${parsed.data.phone}\n` +
-      `Project Type: ${parsed.data.projectType}\n\n` +
-      `${parsed.data.message}\n`;
-    window.location.href = `mailto:${COMPANY.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    toast({
-      title: "Opening your email",
-      description: "Your inquiry has been prepared. Please send it from your mail app.",
-    });
-    setSubmitting(false);
+    try {
+      const { data: result, error } = await supabase.functions.invoke("send-contact-email", {
+        body: parsed.data,
+      });
+      if (error) throw error;
+      if (!result?.success) throw new Error(result?.error ?? "Send failed");
+
+      toast({
+        title: "Inquiry sent",
+        description: "Thanks — we'll be in touch shortly.",
+      });
+      form.reset();
+      setProjectType("");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Something went wrong";
+      toast({
+        title: "Could not send inquiry",
+        description: `${msg}. You can also call ${COMPANY.phone}.`,
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
