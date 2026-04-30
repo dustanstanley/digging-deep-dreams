@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/myers-logo.png";
+import logoLight from "@/assets/myers-logo-light.png";
+import logoDark from "@/assets/myers-logo-dark.png";
 import { NAV_LINKS, COMPANY } from "@/content/site";
 import { cn } from "@/lib/utils";
 
@@ -27,12 +28,9 @@ export const SiteHeader = () => {
       <div className="container-prose flex items-center justify-between h-20">
         <a href="#top" className="flex items-center gap-3" aria-label={COMPANY.name}>
           <img
-            src={logo}
+            src={scrolled || open ? logoDark : logoLight}
             alt={`${COMPANY.shortName} logo`}
-            className={cn(
-              "h-12 md:h-14 w-auto transition-all",
-              scrolled || open ? "" : "drop-shadow-[0_2px_6px_rgba(0,0,0,0.5)]"
-            )}
+            className="h-12 md:h-14 w-auto transition-all"
           />
         </a>
 
