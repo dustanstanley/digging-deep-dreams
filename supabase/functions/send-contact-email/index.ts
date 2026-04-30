@@ -51,7 +51,7 @@ Deno.serve(async (req) => {
       <p><strong>Message:</strong></p>
       <p style="white-space:pre-wrap">${escapeHtml(d.message)}</p>
       <hr/>
-      <p style="color:#888;font-size:12px">Sent from the Myers Underground Utilities website (test mode → ${TEST_RECIPIENT}).</p>
+      <p style="color:#888;font-size:12px">Sent from the Myers Underground Utilities website (test mode → ${TEST_RECIPIENTS.join(", ")}).</p>
     `;
 
     const resp = await fetch(`${GATEWAY_URL}/emails`, {
