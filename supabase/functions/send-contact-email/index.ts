@@ -63,7 +63,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         from: FROM_ADDRESS,
-        to: [TEST_RECIPIENT],
+        to: TEST_RECIPIENTS,
         reply_to: d.email,
         subject: `Project Inquiry — ${d.projectType} (${d.name})`,
         html,
