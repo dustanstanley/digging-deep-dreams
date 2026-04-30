@@ -26,12 +26,26 @@ export const SiteHeader = () => {
       )}
     >
       <div className="container-prose flex items-center justify-between h-20">
-        <a href="#top" className="flex items-center gap-3" aria-label={COMPANY.name}>
-          <img
-            src={scrolled || open ? logoDark : logoLight}
-            alt={`${COMPANY.shortName} logo`}
-            className="h-12 md:h-14 w-auto transition-all"
-          />
+        <a href="#top" className="relative flex items-center gap-3" aria-label={COMPANY.name}>
+          <div className="relative h-12 md:h-14 w-[140px] md:w-[160px]">
+            <img
+              src={logoLight}
+              alt={`${COMPANY.shortName} logo`}
+              className={cn(
+                "absolute inset-0 h-full w-auto transition-opacity duration-200",
+                scrolled || open ? "opacity-0" : "opacity-100"
+              )}
+            />
+            <img
+              src={logoDark}
+              alt=""
+              aria-hidden="true"
+              className={cn(
+                "absolute inset-0 h-full w-auto transition-opacity duration-200",
+                scrolled || open ? "opacity-100" : "opacity-0"
+              )}
+            />
+          </div>
         </a>
 
         <nav className="hidden lg:flex items-center gap-8">
